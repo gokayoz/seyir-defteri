@@ -1,1 +1,1 @@
-# SeyirDefteri
+# Seyir Defteri Uygulaması
