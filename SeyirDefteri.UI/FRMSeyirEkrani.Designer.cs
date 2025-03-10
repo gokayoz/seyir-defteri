@@ -42,6 +42,7 @@
             dtpLimandanCikisTarihi = new DateTimePicker();
             label5 = new Label();
             label6 = new Label();
+            btnGec = new Button();
             SuspendLayout();
             // 
             // dtpLimanaVarisTarihi
@@ -70,9 +71,9 @@
             // 
             // btnSeferOlustur
             // 
-            btnSeferOlustur.Location = new Point(708, 242);
+            btnSeferOlustur.Location = new Point(618, 224);
             btnSeferOlustur.Name = "btnSeferOlustur";
-            btnSeferOlustur.Size = new Size(161, 28);
+            btnSeferOlustur.Size = new Size(161, 46);
             btnSeferOlustur.TabIndex = 3;
             btnSeferOlustur.Text = "Sefer Oluştur";
             btnSeferOlustur.UseVisualStyleBackColor = true;
@@ -82,7 +83,7 @@
             // 
             lvSeferler.Location = new Point(10, 290);
             lvSeferler.Name = "lvSeferler";
-            lvSeferler.Size = new Size(945, 198);
+            lvSeferler.Size = new Size(945, 325);
             lvSeferler.TabIndex = 4;
             lvSeferler.UseCompatibleStateImageBehavior = false;
             // 
@@ -162,11 +163,22 @@
             label6.TabIndex = 1;
             label6.Text = "Varış Limanı:";
             // 
+            // btnGec
+            // 
+            btnGec.Location = new Point(794, 224);
+            btnGec.Name = "btnGec";
+            btnGec.Size = new Size(161, 46);
+            btnGec.TabIndex = 5;
+            btnGec.Text = "Sonraki Sayfa";
+            btnGec.UseVisualStyleBackColor = true;
+            btnGec.Click += btnGec_Click;
+            // 
             // FRMSeyirEkrani
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(969, 500);
+            ClientSize = new Size(969, 627);
+            Controls.Add(btnGec);
             Controls.Add(lvSeferler);
             Controls.Add(btnSeferOlustur);
             Controls.Add(cmbVarisLimani);
@@ -205,5 +217,6 @@
         private DateTimePicker dtpLimandanCikisTarihi;
         private Label label5;
         private Label label6;
+        private Button btnGec;
     }
 }

@@ -16,5 +16,6 @@ namespace SeyirDefteri.Core
         public string UgrayacagiLiman { get; set; }
         public string VarisLimani { get; set; }
         public string CikisLimani { get; set; }
+        public override string ToString() => $"{Gemi.GemiAdi} - {LimandanCikisTarihi.ToShortDateString()} - {LimanaVarisTarihi.ToShortDateString()} ";
     }
 }

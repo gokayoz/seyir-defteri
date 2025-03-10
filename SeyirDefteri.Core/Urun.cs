@@ -10,5 +10,6 @@ namespace SeyirDefteri.Core
     {
         public int UrunId { get; set; }
         public string UrunAdi { get; set; }
+        public override string ToString() => $"Ürün Adı: {UrunAdi}";
     }
 }

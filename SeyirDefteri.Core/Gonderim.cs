@@ -13,5 +13,6 @@ namespace SeyirDefteri.Core
         public IlgilenenKisi IlgilenenKisi { get; set; }
         public SeyirKaydi SeyirKaydi { get; set; }
         public decimal GonderimTonaji { get; set; }
+        public override string ToString() => $"{SeyirKaydi.Gemi.GemiAdi} - {SeyirKaydi.LimandanCikisTarihi} - {SeyirKaydi.LimanaVarisTarihi} - {Urun.UrunAdi} - {IlgilenenKisi.BagliOlduguFirma.FirmaAdi} - {GonderimTonaji}";
     }
 }

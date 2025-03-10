@@ -11,8 +11,6 @@ namespace SeyirDefteri.Core
         public int GemiId { get; set; }
         public string GemiAdi { get; set; }
         public decimal GemiTonaji { get; set; }
-
-
         public override string ToString() => $"Gemi Adı: {GemiAdi} Tonaj: {GemiTonaji}";
     }
 }
