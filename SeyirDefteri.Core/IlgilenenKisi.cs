@@ -12,6 +12,6 @@ namespace SeyirDefteri.Core
         public string IlgilenenKisiAdi { get; set; }
         public string IlgilenenKisiTelefonu { get; set; }
         public Firma BagliOlduguFirma { get; set; }
-
+        public override string ToString() => $"{IlgilenenKisiAdi}";
     }
 }

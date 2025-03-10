@@ -10,5 +10,6 @@ namespace SeyirDefteri.Core
     {
         public int FirmaId { get; set; }
         public string FirmaAdi { get; set; }
+        public override string ToString() => $"Firma Adı: {FirmaAdi} Firma ID: {FirmaId}";
     }
 }
