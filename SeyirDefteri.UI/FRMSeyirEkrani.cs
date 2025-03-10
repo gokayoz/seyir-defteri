@@ -4,6 +4,7 @@ namespace SeyirDefteri.UI
 {
     public partial class FRMSeyirEkrani : Form
     {
+        public static List<SeyirKaydi> SeyirKayitlari = new();
         public FRMSeyirEkrani()
         {
             InitializeComponent();
@@ -43,7 +44,7 @@ namespace SeyirDefteri.UI
                 MessageBox.Show("Gemi girilmesi zorunludur!");
                 return;
             }
-            if (cmbCikisLimani.SelectedItem== cmbUgradigiLiman.SelectedItem || cmbCikisLimani.SelectedItem == cmbVarisLimani.SelectedItem || cmbVarisLimani.SelectedItem == cmbUgradigiLiman.SelectedItem)
+            if (cmbCikisLimani.SelectedItem == cmbUgradigiLiman.SelectedItem || cmbCikisLimani.SelectedItem == cmbVarisLimani.SelectedItem || cmbVarisLimani.SelectedItem == cmbUgradigiLiman.SelectedItem)
             {
                 MessageBox.Show("Sefer sýrasýnda girilen duraklar farklý olmak zorundadýr!");
                 return;
@@ -70,6 +71,21 @@ namespace SeyirDefteri.UI
             listViewItem.SubItems.Add(seyirKaydi.VarisLimani.ToString());
 
             lvSeferler.Items.Add(listViewItem);
+            // static listesine seyir kaydýný ekler
+            SeyirKayitlari.Add(seyirKaydi);
+
+            Temizle();
+        }
+
+        private void Temizle()
+        {
+            cmbCikisLimani.SelectedItem = null;
+            cmbVarisLimani.SelectedItem = null;
+            cmbUgradigiLiman.SelectedItem = null;
+            cmbGemi.SelectedItem = null;
+
+            dtpLimanaVarisTarihi.Value = DateTime.Today;
+            dtpLimandanCikisTarihi.Value = DateTime.Today;
         }
 
         private void GemiOlsutur()
@@ -92,12 +108,10 @@ namespace SeyirDefteri.UI
                 new Gemi { GemiId = 14, GemiAdi = "MSC Seaview", GemiTonaji = 154000m },
                 new Gemi { GemiId = 15, GemiAdi = "Carnival Vista", GemiTonaji = 133500m }
             };
-
             foreach (var gemi in gemiler)
             {
                 cmbGemi.Items.Add(gemi);
             }
-
         }
         private void LimanOlustur()
         {
@@ -142,6 +156,20 @@ namespace SeyirDefteri.UI
                 cmbCikisLimani.Items.Add(liman);
                 cmbUgradigiLiman.Items.Add(liman);
                 cmbVarisLimani.Items.Add(liman);
+            }
+        }
+        private void btnGec_Click(object sender, EventArgs e)
+        {
+            if (SeyirKayitlari.Count > 0)
+            {
+                FRMGonderimEkrani fRMGonderimEkrani = new FRMGonderimEkrani(SeyirKayitlari);
+                this.Hide();
+                fRMGonderimEkrani.ShowDialog();
+                this.Show();
+            }
+            else
+            {
+                MessageBox.Show("Lütfen seyilerinizi listeye ekleyiniz!");
             }
         }
     }
