@@ -26,11 +26,6 @@ namespace SeyirDefteri.UI
         {
             foreach (SeyirKaydi seyirKaydi in seyirKayitlari)
             {
-                if (seyirKaydi.Gemi == null)
-                {
-                    MessageBox.Show("Sefer kayıtlarındaki gemi bilgisi eksik!");
-                    return;
-                }
                 cmbSeferler.Items.Add(seyirKaydi);
             }
         }
@@ -114,13 +109,6 @@ namespace SeyirDefteri.UI
             }
 
             SeyirKaydi seciliSeyir = cmbSeferler.SelectedItem as SeyirKaydi;
-
-            if (seciliSeyir.Gemi == null || seciliSeyir == null)
-            {
-                MessageBox.Show("Geçerli bir sefer seçilemedi veya gemi bilgisi eksik!");
-                return;
-            }
-
             seciliGemi = seciliSeyir.Gemi;
 
             if (nudTonaj.Value < 0 || seciliGemi.GemiTonaji < nudTonaj.Value)
@@ -155,10 +143,33 @@ namespace SeyirDefteri.UI
             gonderim.IlgilenenKisi.IlgilenenKisiTelefonu = mtxtTelefon.Text;
             gonderim.IlgilenenKisi.BagliOlduguFirma = cmbFirmalar.SelectedItem as Firma;
 
+            ListViewItem listViewItem = new ListViewItem();
+            listViewItem.Text = (id++).ToString();
+            listViewItem.SubItems.Add(gonderim.GonderimTonaji.ToString());
+            listViewItem.SubItems.Add(gonderim.Urun.UrunAdi);
+            listViewItem.SubItems.Add(gonderim.IlgilenenKisi.BagliOlduguFirma.FirmaAdi);
+            listViewItem.SubItems.Add(gonderim.IlgilenenKisi.IlgilenenKisiAdi);
+            listViewItem.SubItems.Add(gonderim.IlgilenenKisi.IlgilenenKisiTelefonu);
 
+            listViewItem.Tag = gonderim;
+            lvGonderim.Items.Add(listViewItem);
+            Temizle();
+        }
+        private void btnGec_Click(object sender, EventArgs e)
+        {
+            if (lvGonderim.Items.Count > 0)
+            {
+                List<Gonderim> gonderimler = new List<Gonderim>();
+                foreach (ListViewItem item in lvGonderim.Items)
+                {
+                    gonderimler.Add((Gonderim)item.Tag);
+                }
 
-
-
+                FRMZRaporuEkrani fRMZRaporuEkrani = new FRMZRaporuEkrani(gonderimler);
+                this.Hide();
+                fRMZRaporuEkrani.ShowDialog();
+                this.Show();
+            }
         }
     }
 }

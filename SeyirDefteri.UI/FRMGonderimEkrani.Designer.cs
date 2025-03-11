@@ -42,6 +42,7 @@
             txtIlgilenenKisi = new TextBox();
             lvGonderim = new ListView();
             btnUrunEkle = new Button();
+            btnGec = new Button();
             ((System.ComponentModel.ISupportInitialize)nudTonaj).BeginInit();
             SuspendLayout();
             // 
@@ -155,19 +156,30 @@
             // 
             // btnUrunEkle
             // 
-            btnUrunEkle.Location = new Point(666, 267);
+            btnUrunEkle.Location = new Point(641, 267);
             btnUrunEkle.Name = "btnUrunEkle";
-            btnUrunEkle.Size = new Size(94, 29);
+            btnUrunEkle.Size = new Size(119, 29);
             btnUrunEkle.TabIndex = 6;
             btnUrunEkle.Text = "Ürün Ekle";
             btnUrunEkle.UseVisualStyleBackColor = true;
             btnUrunEkle.Click += btnUrunEkle_Click;
+            // 
+            // btnGec
+            // 
+            btnGec.Location = new Point(641, 216);
+            btnGec.Name = "btnGec";
+            btnGec.Size = new Size(119, 29);
+            btnGec.TabIndex = 7;
+            btnGec.Text = "Sonraki Sayfa";
+            btnGec.UseVisualStyleBackColor = true;
+            btnGec.Click += btnGec_Click;
             // 
             // FRMGonderimEkrani
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(795, 580);
+            Controls.Add(btnGec);
             Controls.Add(btnUrunEkle);
             Controls.Add(lvGonderim);
             Controls.Add(label6);
@@ -207,5 +219,6 @@
         private TextBox txtIlgilenenKisi;
         private ListView lvGonderim;
         private Button btnUrunEkle;
+        private Button btnGec;
     }
 }
