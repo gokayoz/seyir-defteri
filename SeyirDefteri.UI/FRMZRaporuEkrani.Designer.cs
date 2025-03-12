@@ -28,12 +28,89 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "FRMZRaporuEkrani";
+            btnExcelOlustur = new Button();
+            dtpBaslangic = new DateTimePicker();
+            lvZRaporu = new ListView();
+            dtpBitis = new DateTimePicker();
+            btnPdfOlustur = new Button();
+            btnMailGonder = new Button();
+            SuspendLayout();
+            // 
+            // btnExcelOlustur
+            // 
+            btnExcelOlustur.Location = new Point(148, 390);
+            btnExcelOlustur.Name = "btnExcelOlustur";
+            btnExcelOlustur.Size = new Size(105, 29);
+            btnExcelOlustur.TabIndex = 0;
+            btnExcelOlustur.Text = "Excel Oluştur";
+            btnExcelOlustur.UseVisualStyleBackColor = true;
+            btnExcelOlustur.Click += btnExcelOlustur_Click;
+            // 
+            // dtpBaslangic
+            // 
+            dtpBaslangic.Location = new Point(12, 31);
+            dtpBaslangic.Name = "dtpBaslangic";
+            dtpBaslangic.Size = new Size(250, 27);
+            dtpBaslangic.TabIndex = 1;
+            dtpBaslangic.ValueChanged += dtpBaslangic_ValueChanged;
+            // 
+            // lvZRaporu
+            // 
+            lvZRaporu.Location = new Point(12, 76);
+            lvZRaporu.Name = "lvZRaporu";
+            lvZRaporu.Size = new Size(776, 284);
+            lvZRaporu.TabIndex = 2;
+            lvZRaporu.UseCompatibleStateImageBehavior = false;
+            // 
+            // dtpBitis
+            // 
+            dtpBitis.Location = new Point(538, 31);
+            dtpBitis.Name = "dtpBitis";
+            dtpBitis.Size = new Size(250, 27);
+            dtpBitis.TabIndex = 1;
+            dtpBitis.ValueChanged += dtpBitis_ValueChanged;
+            // 
+            // btnPdfOlustur
+            // 
+            btnPdfOlustur.Location = new Point(12, 390);
+            btnPdfOlustur.Name = "btnPdfOlustur";
+            btnPdfOlustur.Size = new Size(94, 29);
+            btnPdfOlustur.TabIndex = 0;
+            btnPdfOlustur.Text = "PDF Oluştur";
+            btnPdfOlustur.UseVisualStyleBackColor = true;
+            // 
+            // btnMailGonder
+            // 
+            btnMailGonder.Location = new Point(296, 390);
+            btnMailGonder.Name = "btnMailGonder";
+            btnMailGonder.Size = new Size(231, 29);
+            btnMailGonder.TabIndex = 0;
+            btnMailGonder.Text = "Excel Dosyasını Mail Gönder";
+            btnMailGonder.UseVisualStyleBackColor = true;
+            // 
+            // FRMZRaporuEkrani
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(lvZRaporu);
+            Controls.Add(dtpBitis);
+            Controls.Add(dtpBaslangic);
+            Controls.Add(btnMailGonder);
+            Controls.Add(btnPdfOlustur);
+            Controls.Add(btnExcelOlustur);
+            Name = "FRMZRaporuEkrani";
+            Text = "Z Raporu Ekranı";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Button btnExcelOlustur;
+        private DateTimePicker dtpBaslangic;
+        private ListView lvZRaporu;
+        private DateTimePicker dtpBitis;
+        private Button btnPdfOlustur;
+        private Button btnMailGonder;
     }
 }
