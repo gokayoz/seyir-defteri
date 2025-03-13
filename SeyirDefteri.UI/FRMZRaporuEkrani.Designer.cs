@@ -78,6 +78,7 @@
             btnPdfOlustur.TabIndex = 0;
             btnPdfOlustur.Text = "PDF Oluştur";
             btnPdfOlustur.UseVisualStyleBackColor = true;
+            btnPdfOlustur.Click += btnPdfOlustur_Click;
             // 
             // btnMailGonder
             // 
