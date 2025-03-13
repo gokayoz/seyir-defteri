@@ -1,14 +1,7 @@
 ﻿using ClosedXML.Excel;
+using iTextSharp.text.pdf;
 using SeyirDefteri.Core;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using iTextSharp.text;
 
 namespace SeyirDefteri.UI
 {
@@ -25,7 +18,6 @@ namespace SeyirDefteri.UI
             ListVieweKolonEkle();
             ListeyiGuncelle();
         }
-
         private void ListVieweKolonEkle()
         {
             lvZRaporu.View = View.Details;
@@ -39,7 +31,6 @@ namespace SeyirDefteri.UI
             lvZRaporu.Columns.Add("Ürün Yükü", 150);
             lvZRaporu.Columns.Add("Kalan Tonaj", 150);
         }
-
         decimal kalanTonaj;
         private void ListeyiGuncelle()
         {
@@ -84,17 +75,14 @@ namespace SeyirDefteri.UI
                 }
             }
         }
-
         private void dtpBaslangic_ValueChanged(object sender, EventArgs e)
         {
             ListeyiGuncelle();
         }
-
         private void dtpBitis_ValueChanged(object sender, EventArgs e)
         {
             ListeyiGuncelle();
         }
-
         private void btnExcelOlustur_Click(object sender, EventArgs e)
         {
             using (var workbook = new XLWorkbook())
@@ -105,8 +93,9 @@ namespace SeyirDefteri.UI
                 workSheet.Cell(1, 2).Value = "Limandan Çıkış Tarihi";
                 workSheet.Cell(1, 3).Value = "Limana Varış Tarihi";
                 workSheet.Cell(1, 4).Value = "Ürün Adı";
-                workSheet.Cell(1, 4).Value = "Firma Adı";
-                workSheet.Cell(1, 5).Value = "Gönderim Tonajı";
+                workSheet.Cell(1, 5).Value = "Firma Adı";
+                workSheet.Cell(1, 6).Value = "Gönderim Tonajı";
+                workSheet.Cell(1, 7).Value = "Kalan Tonaj";
 
                 int satir = 2;
                 foreach (ListViewItem item in lvZRaporu.Items)
@@ -134,6 +123,50 @@ namespace SeyirDefteri.UI
                         MessageBox.Show("Excel Başarıyla Oluşturuldu.");
                     }
                 }
+            }
+        }
+        private void btnPdfOlustur_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "PDF Dosyası|*.pdf*";
+                saveFileDialog.Title = "PDF Dosyası Kaydet";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Document document = new Document();
+
+                    PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
+                    document.Open();
+
+                    PdfPTable pdfPTable = new PdfPTable(lvZRaporu.Columns.Count);
+                    pdfPTable.WidthPercentage = 100;
+
+                    foreach (ColumnHeader column in lvZRaporu.Columns)
+                    {
+                        PdfPCell pdfPCell = new PdfPCell(new Phrase(column.Text));
+                        pdfPCell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                        pdfPTable.AddCell(pdfPCell);
+
+                    }
+
+                    foreach (ListViewItem item in lvZRaporu.Items)
+                    {
+                        foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
+                        {
+                            pdfPTable.AddCell(subItem.Text);
+                        }
+                    }
+                    document.Add(pdfPTable);
+
+                    document.Close();
+                    MessageBox.Show("PDF başarıyla oluşturuldu.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hata oluştu: {ex.Message}");
             }
         }
     }
