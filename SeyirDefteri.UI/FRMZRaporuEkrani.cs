@@ -2,6 +2,8 @@
 using iTextSharp.text.pdf;
 using SeyirDefteri.Core;
 using iTextSharp.text;
+using System.Net.Mail;
+using System.Net;
 
 namespace SeyirDefteri.UI
 {
@@ -37,28 +39,29 @@ namespace SeyirDefteri.UI
             DateTime baslangicTarihi = dtpBaslangic.Value.Date;
             DateTime bitisTarihi = dtpBitis.Value.Date;
 
-            decimal toplamKullanilanTonaj = 0;
-            decimal gemiTonaji = 0;
+            var gemiBazliGonderimler = Gonderimler
+                .Where(g => g.SeyirKaydi.LimandanCikisTarihi.Date >= baslangicTarihi && g.SeyirKaydi.LimanaVarisTarihi.Date <= bitisTarihi)
+                .GroupBy(g => g.SeyirKaydi.Gemi.GemiAdi)
+                .ToList();
 
-            foreach (Gonderim gonderim in Gonderimler)
+            lvZRaporu.Items.Clear();
+            foreach (var grup in gemiBazliGonderimler)
             {
-                DateTime limandanCikisTarihi = gonderim.SeyirKaydi.LimandanCikisTarihi.Date;
-                DateTime limanaVarisTarihi = gonderim.SeyirKaydi.LimanaVarisTarihi.Date;
+                decimal gemiTonaji = grup.First()
+                    .SeyirKaydi.Gemi?.GemiTonaji ?? 0;
 
-                if (limandanCikisTarihi >= baslangicTarihi && limanaVarisTarihi <= bitisTarihi)
+                decimal toplamKullanilanTonaj = 0;
+
+                foreach (Gonderim gonderim in grup)
                 {
-                    if (gemiTonaji <= 0)
-                    {
-                        gemiTonaji = gonderim.SeyirKaydi.Gemi.GemiTonaji;
-                    }
                     toplamKullanilanTonaj += gonderim.GonderimTonaji;
-                    kalanTonaj = gemiTonaji - toplamKullanilanTonaj;
+                    decimal kalanTonaj = gemiTonaji - toplamKullanilanTonaj;
 
                     ListViewItem listViewItem = new ListViewItem();
 
                     listViewItem.Text = gonderim.SeyirKaydi.Gemi.GemiAdi;
                     listViewItem.SubItems.Add(gonderim.SeyirKaydi.LimandanCikisTarihi.ToString("dd/MM/yyyy"));
-                    listViewItem.SubItems.Add(gonderim.SeyirKaydi.LimanaVarisTarihi.ToString("dd/MMM/yyyy"));
+                    listViewItem.SubItems.Add(gonderim.SeyirKaydi.LimanaVarisTarihi.ToString("dd/MM/yyyy"));
                     listViewItem.SubItems.Add(gonderim.Urun.UrunAdi);
                     listViewItem.SubItems.Add(gonderim.IlgilenenKisi.BagliOlduguFirma.FirmaAdi);
                     listViewItem.SubItems.Add(gonderim.GonderimTonaji.ToString());
@@ -130,7 +133,7 @@ namespace SeyirDefteri.UI
             try
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "PDF Dosyası|*.pdf*";
+                saveFileDialog.Filter = "PDF Dosyası|*.pdf";
                 saveFileDialog.Title = "PDF Dosyası Kaydet";
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -148,7 +151,6 @@ namespace SeyirDefteri.UI
                         PdfPCell pdfPCell = new PdfPCell(new Phrase(column.Text));
                         pdfPCell.BackgroundColor = BaseColor.LIGHT_GRAY;
                         pdfPTable.AddCell(pdfPCell);
-
                     }
 
                     foreach (ListViewItem item in lvZRaporu.Items)
@@ -167,6 +169,55 @@ namespace SeyirDefteri.UI
             catch (Exception ex)
             {
                 MessageBox.Show($"Hata oluştu: {ex.Message}");
+            }
+        }
+
+        private void btnMailGonder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string excelDosyaYolu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "ZRaporu.xlsx");
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("Gönderim ZRaporu");
+
+                    for (int col = 0; col < lvZRaporu.Columns.Count; col++)
+                    {
+                        worksheet.Cell(1, col + 1).Value = lvZRaporu.Columns[col].Text;
+                    }
+                    int row = 2;
+                    foreach (ListViewItem item in lvZRaporu.Items)
+                    {
+                        for (int i = 0; i < item.SubItems.Count; i++)
+                        {
+                            worksheet.Cell(row, i + 1).Value = item.SubItems[i].Text;
+                        }
+                        row++;
+                    }
+                    workbook.SaveAs(excelDosyaYolu);
+                }
+
+                MailMessage mailMessage = new MailMessage();
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+
+                mailMessage.From = new MailAddress("denizgokay.yzlm@gmail.com");
+                mailMessage.To.Add("buraksenolyzl@gmail.com");
+                mailMessage.Subject = "Gönderimin Z Raporu";
+                mailMessage.Body = "Merhaba İyi çalışmalar,\n" +
+                    "Ekteki dosya gönderimin z raporudur.";
+                mailMessage.Attachments.Add(new Attachment(excelDosyaYolu));
+
+                smtp.Port = 587;
+                smtp.Credentials = new NetworkCredential("denizgokay.yzlm@gmail.com", "lwivyhxcxirhohjv");
+                smtp.EnableSsl = true;
+
+                smtp.Send(mailMessage);
+                MessageBox.Show("E-posta gönderildi.");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

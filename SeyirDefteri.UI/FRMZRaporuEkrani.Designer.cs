@@ -88,6 +88,7 @@
             btnMailGonder.TabIndex = 0;
             btnMailGonder.Text = "Excel Dosyasını Mail Gönder";
             btnMailGonder.UseVisualStyleBackColor = true;
+            btnMailGonder.Click += btnMailGonder_Click;
             // 
             // FRMZRaporuEkrani
             // 
