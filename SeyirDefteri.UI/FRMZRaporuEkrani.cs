@@ -200,15 +200,15 @@ namespace SeyirDefteri.UI
                 MailMessage mailMessage = new MailMessage();
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com");
 
-                mailMessage.From = new MailAddress("denizgokay.yzlm@gmail.com");
-                mailMessage.To.Add("buraksenolyzl@gmail.com");
+                mailMessage.From = new MailAddress("Bu kısma gönderen kişinin e postası girilecek");
+                mailMessage.To.Add("Bu kısma alıcının e postası giricelek");
                 mailMessage.Subject = "Gönderimin Z Raporu";
                 mailMessage.Body = "Merhaba İyi çalışmalar,\n" +
                     "Ekteki dosya gönderimin z raporudur.";
                 mailMessage.Attachments.Add(new Attachment(excelDosyaYolu));
 
                 smtp.Port = 587;
-                smtp.Credentials = new NetworkCredential("denizgokay.yzlm@gmail.com", "lwivyhxcxirhohjv");
+                smtp.Credentials = new NetworkCredential("Bu kısım gönderen kişi e postası", "gönderim mail şifresi");
                 smtp.EnableSsl = true;
 
                 smtp.Send(mailMessage);
